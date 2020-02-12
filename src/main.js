@@ -11,12 +11,14 @@ import 'element-ui/lib/theme-chalk/index.css'; // 默认主题
 import './assets/css/icon.css';
 import './components/common/directives';
 import 'babel-polyfill';
+import qs from 'qs'
 
 Vue.config.productionTip = false;
 Vue.use(VueI18n);
 Vue.use(ElementUI, {
     size: 'small'
 });
+Vue.prototype.$qs = qs;
 Vue.prototype.$axios = service;
 const i18n = new VueI18n({
     locale: 'zh',
