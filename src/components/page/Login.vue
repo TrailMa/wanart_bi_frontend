@@ -57,12 +57,7 @@ export default {
           if (result.result == 1) {
             // setCookie('username')
             console.log("login success");
-            this.$router
-              .push("/queryEvent", ()=>{
-                console.log("on complete")
-              }, (reason)=>{
-                console.log("on abort" + reason)
-              })
+            this.$router.push("/queryEvent");
           } else {
             this.$message(result.msg);
           }
