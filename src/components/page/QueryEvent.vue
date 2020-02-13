@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>this is query event page</h2>
+    <event-selector></event-selector>
     <button @click="changeType">切换图表类型</button>
     <ve-chart :data="chartData" :settings="chartSettings"></ve-chart>
     <el-button type="primary" @click="queryData">查询</el-button>
@@ -10,6 +10,7 @@
 <script>
 import qs from 'qs'
 import chartDataPaser from '../../utils/chartDataPaser'
+import EventSelector from '../common/EventSelector'
 export default {
   name: 'QueryEvent',
   data() {
@@ -52,8 +53,8 @@ export default {
       let result = await this.$axios.post(url, param)
       if (result.result == 1) {
         this.chartData = chartDataPaser.parseCommonDataList(result.dataList)
-        console.log(result.dataList)
-        console.log(this.chartData)
+        // console.log(result.dataList)
+        // console.log(this.chartData)
       } else {
         this.$message(result.msg)
       }
@@ -66,6 +67,10 @@ export default {
       }
       this.chartSettings = { type: this.typeArr[this.index] }
     }
+  },
+
+  components: {
+    EventSelector
   }
 }
 </script>
