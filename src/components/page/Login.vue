@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import qs from 'qs'
-import md5 from 'js-md5'
+import qs from "qs";
+import md5 from "js-md5";
 export default {
   name: "Login",
   data() {
@@ -40,21 +40,32 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
           let url = "/api/login";
           let params = {
-              userName: this.ruleForm.username,
-              password: md5(this.ruleForm.password)
-          }
-          this.$axios
+            userName: this.ruleForm.username,
+            password: md5(this.ruleForm.password)
+          };
+          let result = await this.$axios
             .post(url, qs.stringify(params))
-            .then(res => {
-              console.log(res);
-            })
             .catch(function(err) {
               console.log("fetch faild:" + err);
             });
+
+          // console.log(result);
+          if (result.result == 1) {
+            // setCookie('username')
+            console.log("login success");
+            this.$router
+              .push("/queryEvent", ()=>{
+                console.log("on complete")
+              }, (reason)=>{
+                console.log("on abort" + reason)
+              })
+          } else {
+            this.$message(result.msg);
+          }
         } else {
           console.log("error submit!!");
           return false;
