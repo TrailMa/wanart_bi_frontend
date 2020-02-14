@@ -8,13 +8,8 @@
     <event-selector
       @selectEvent="selectEvent"
       :eventList="eventList"
+      ref="eventSelector"
     ></event-selector>
-
-    <column-selector
-      usage="分组"
-      :columnList="columnList"
-      ref="groupByColumnSelector"
-    ></column-selector>
 
     <column-selector
       usage="去重"
@@ -22,8 +17,16 @@
       ref="distinctColumnSelector"
     ></column-selector>
 
+    <column-selector
+      usage="分组"
+      :columnList="columnList"
+      ref="groupByColumnSelector"
+    ></column-selector>
+
     <separation-time-selector ref="separationTimeSelector">
     </separation-time-selector>
+
+    <date-time-selector ref="dateTimeSelector"></date-time-selector>
 
     <button @click="changeType">切换图表类型</button>
     <ve-chart :data="chartData" :settings="chartSettings"></ve-chart>
@@ -38,6 +41,7 @@ import ProjectSelector from '../common/ProjectSelector'
 import EventSelector from '../common/EventSelector'
 import ColumnSelector from '../common/ColumnSelector'
 import SeparationTimeSelector from '../common/SeparationTimeSelector'
+import DateTimeSelector from '../common/DateTimeSelector'
 
 export default {
   name: 'QueryEvent',
@@ -61,15 +65,16 @@ export default {
   methods: {
     async queryData() {
       let param = {
-        project: 'dldl',
-        eventName: 'login',
-        distinct: 'uid',
-        group: 'serverId',
-        separationTime: 'day',
-        startTime: '2019-12-20 00:00:00',
-        endTime: '2019-12-26 23:10:20',
+        project: this.$refs.projectSelector.getCurProject().name,
+        eventName: this.$refs.eventSelector.getCurEventName(),
+        distinct: this.$refs.distinctColumnSelector.getCurColumnName(),
+        group: this.$refs.groupByColumnSelector.getCurColumnName(),
+        separationTime: this.$refs.separationTimeSelector.getCurSeparationTime(),
+        startTime: this.$refs.dateTimeSelector.getStartTime(),
+        endTime: this.$refs.dateTimeSelector.getEndTime(),
         conditionList: []
       }
+      // console.log(param)
       let url = '/api/event/queryData'
       let params = {
         queryDataRequest: param
@@ -77,8 +82,9 @@ export default {
       let result = await this.$axios.post(url, param)
       if (result.result == 1) {
         this.chartData = chartDataPaser.parseCommonDataList(result.dataList)
-        // console.log(result.dataList)
-        // console.log(this.chartData)
+        if (this.chartData.rows.length == 0) {
+          this.$message('当前查询无数据展示')
+        }
       } else {
         this.$message(result.msg)
       }
@@ -123,12 +129,10 @@ export default {
     },
 
     selectProject(project) {
-      console.log(project.desc + ' selected')
       this.queryEventList(project)
     },
 
     selectEvent(eventName) {
-      console.log(eventName + ' selected')
       this.queryColumnList(eventName)
     }
   },
@@ -137,7 +141,8 @@ export default {
     ProjectSelector,
     EventSelector,
     ColumnSelector,
-    SeparationTimeSelector
+    SeparationTimeSelector,
+    DateTimeSelector
   }
 }
 </script>

@@ -53,6 +53,9 @@ export default {
 
     getCurColumn() {
       return this.columnList[curColumnIndex]
+    },
+    getCurColumnName() {
+      return this.curColumnName
     }
   }
 }

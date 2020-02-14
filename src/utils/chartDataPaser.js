@@ -1,9 +1,11 @@
 export default {
   parseCommonDataList(dataList) {
-    // debugger
     let chartData = {
       columns: ['time'],
       rows: [],
+    }
+    if (!dataList) {
+      return chartData
     }
 
     const groupIdSet = new Set()
