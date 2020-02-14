@@ -17,10 +17,18 @@
 <script>
 export default {
   name: 'EventSelector',
+  props: {
+    eventList: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+
   data() {
     return {
-      curEventName: '',
-      eventList: []
+      curEventName: ''
     }
   },
 
@@ -28,22 +36,12 @@ export default {
     onSelectEvent(value) {
       // value 为 eventList的index
       this.curEventName = this.eventList[value]
+      // 通知父组件 选择事件消息
+      this.$emit('selectEvent', this.curEventName)
     },
 
-    async queryEventList(project) {
-      if (!project) {
-        return
-      }
-      if (project) {
-        let result = await this.$axios.get('api/event/queryAll', {
-          params: { project: project.name }
-        })
-        if (result.result == 1) {
-          this.eventList = result.eventList
-        } else {
-          this.$message(result.msg)
-        }
-      }
+    getCurEventName() {
+      return this.curEventName
     }
   }
 }

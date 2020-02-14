@@ -51,6 +51,10 @@ export default {
           params: { curProjectId: value }
         })
       }
+    },
+
+    getCurProject() {
+      return this.getProjectById(this.curProjectId)
     }
   },
 
@@ -65,8 +69,10 @@ export default {
     }
     if (this.curProjectId == 0) {
       this.curProjectId = this.projectList[0].id
-      // ?? 是否需要emit 通知父组件??
     }
+
+    let project = this.getProjectById(this.curProjectId)
+    this.$emit('selectProject', project)
   }
 }
 </script>
