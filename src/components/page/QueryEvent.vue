@@ -22,6 +22,9 @@
       ref="distinctColumnSelector"
     ></column-selector>
 
+    <separation-time-selector ref="separationTimeSelector">
+    </separation-time-selector>
+
     <button @click="changeType">切换图表类型</button>
     <ve-chart :data="chartData" :settings="chartSettings"></ve-chart>
     <el-button type="primary" @click="queryData">查询</el-button>
@@ -34,6 +37,7 @@ import chartDataPaser from '../../utils/chartDataPaser'
 import ProjectSelector from '../common/ProjectSelector'
 import EventSelector from '../common/EventSelector'
 import ColumnSelector from '../common/ColumnSelector'
+import SeparationTimeSelector from '../common/SeparationTimeSelector'
 
 export default {
   name: 'QueryEvent',
@@ -132,7 +136,8 @@ export default {
   components: {
     ProjectSelector,
     EventSelector,
-    ColumnSelector
+    ColumnSelector,
+    SeparationTimeSelector
   }
 }
 </script>
