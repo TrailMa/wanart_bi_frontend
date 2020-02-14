@@ -53,10 +53,17 @@ export default {
     },
 
     onSelectProject(value) {
+      let oldProjectId = this.$store.state.curProjectId
       this.curProjectId = value
       this.$store.dispatch('setCurProjectId', value)
-      // todo sync curProjectId to remote server
+
       this.queryEventList(this.curProjectId)
+
+      if (oldProjectId != 0 && oldProjectId != value) {
+        this.$axios.get('api/manage/user/updateCurProjectId', {
+          params: { curProjectId: value }
+        })
+      }
     },
     onSelectEvent(value) {
       // value 为 eventList的index
