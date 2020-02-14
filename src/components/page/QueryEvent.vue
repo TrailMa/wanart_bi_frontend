@@ -1,6 +1,7 @@
 <template>
   <div>
-    <event-selector></event-selector>
+    <project-selector @selectProject="selectProject"></project-selector>
+    <event-selector ref="eventSelector"></event-selector>
     <button @click="changeType">切换图表类型</button>
     <ve-chart :data="chartData" :settings="chartSettings"></ve-chart>
     <el-button type="primary" @click="queryData">查询</el-button>
@@ -10,7 +11,9 @@
 <script>
 import qs from 'qs'
 import chartDataPaser from '../../utils/chartDataPaser'
+import ProjectSelector from '../common/ProjectSelector'
 import EventSelector from '../common/EventSelector'
+
 export default {
   name: 'QueryEvent',
   data() {
@@ -60,16 +63,22 @@ export default {
       }
     },
 
-    changeType: function() {
+    changeType() {
       this.index++
       if (this.index >= this.typeArr.length) {
         this.index = 0
       }
       this.chartSettings = { type: this.typeArr[this.index] }
+    },
+
+    selectProject(project) {
+      console.log(project.desc + 'selected')
+      this.$refs.eventSelector.queryEventList(project)
     }
   },
 
   components: {
+    ProjectSelector,
     EventSelector
   }
 }
