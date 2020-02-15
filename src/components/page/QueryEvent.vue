@@ -26,7 +26,13 @@
     <separation-time-selector ref="separationTimeSelector">
     </separation-time-selector>
 
-    <date-time-selector ref="dateTimeSelector"></date-time-selector>
+    <date-time-range-selector
+      ref="dateTimeRangeSelector"
+    ></date-time-range-selector>
+    <condition-group
+      :columnList="columnList"
+      ref="conditionGroup"
+    ></condition-group>
 
     <button @click="changeType">切换图表类型</button>
     <ve-chart :data="chartData" :settings="chartSettings"></ve-chart>
@@ -36,12 +42,13 @@
 
 <script>
 import qs from 'qs'
-import chartDataPaser from '../../utils/chartDataPaser'
+import chartDataPaser from '../../utils/chartDataParser'
 import ProjectSelector from '../common/ProjectSelector'
 import EventSelector from '../common/EventSelector'
 import ColumnSelector from '../common/ColumnSelector'
 import SeparationTimeSelector from '../common/SeparationTimeSelector'
-import DateTimeSelector from '../common/DateTimeSelector'
+import DateTimeRangeSelector from '../common/DateTimeRangeSelector'
+import ConditionGroup from '../common/ConditionGroup'
 
 export default {
   name: 'QueryEvent',
@@ -70,11 +77,10 @@ export default {
         distinct: this.$refs.distinctColumnSelector.getCurColumnName(),
         group: this.$refs.groupByColumnSelector.getCurColumnName(),
         separationTime: this.$refs.separationTimeSelector.getCurSeparationTime(),
-        startTime: this.$refs.dateTimeSelector.getStartTime(),
-        endTime: this.$refs.dateTimeSelector.getEndTime(),
-        conditionList: []
+        startTime: this.$refs.dateTimeRangeSelector.getStartTime(),
+        endTime: this.$refs.dateTimeRangeSelector.getEndTime(),
+        conditionList: this.$refs.conditionGroup.getConditions()
       }
-      // console.log(param)
       let url = '/api/event/queryData'
       let params = {
         queryDataRequest: param
@@ -142,7 +148,9 @@ export default {
     EventSelector,
     ColumnSelector,
     SeparationTimeSelector,
-    DateTimeSelector
+    DateTimeRangeSelector,
+    ConditionGroup
+    // ConditionSelector
   }
 }
 </script>

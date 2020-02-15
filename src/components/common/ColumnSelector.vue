@@ -30,7 +30,7 @@ export default {
     usage: {
       type: String,
       default() {
-        '未知用途'
+        return '未知用途'
       }
     }
   },
@@ -49,6 +49,7 @@ export default {
       // value 为 columnList的index
       this.curColumnIndex = value
       this.curColumnName = this.columnList[value].columnName
+      this.$emit('onSelect', this.columnList[value])
     },
 
     getCurColumn() {
