@@ -47,8 +47,8 @@ export default {
       return this.value
     },
 
-    resetSelected() {
-      value = ''
+    reset() {
+      this.value = ''
     }
   }
 }

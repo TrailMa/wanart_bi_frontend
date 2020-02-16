@@ -58,7 +58,7 @@ export default {
     }
   },
 
-  created() {
+  mounted() {
     // init project list
     this.curProjectId = this.$store.state.curProjectId
     this.projectList = this.$store.state.projectList

@@ -50,6 +50,10 @@ export default {
   methods: {
     getTime() {
       return timeParser.dateTimeToString(new Date(this.value))
+    },
+
+    reset() {
+      this.value = new Date(new Date().toLocaleDateString())
     }
   }
 }

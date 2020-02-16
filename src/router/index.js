@@ -126,6 +126,13 @@ export default new Router({
         title: '事件查询'
       }
     },
+    {
+      path: '/queryFunnel',
+      component: () => import('../components/page/QueryFunnel.vue'),
+      meta: {
+        title: '漏斗查询'
+      }
+    }
     // {
     //     path: '*',
     //     redirect: '/404'
