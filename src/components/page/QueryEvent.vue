@@ -119,7 +119,6 @@ export default {
         params: { project: project.name, eventName }
       })
       if (result.result == 1) {
-        console.log(result)
         this.columnList = result.eventColumnList
       } else {
         this.$message(result.msg)
@@ -135,11 +134,25 @@ export default {
     },
 
     selectProject(project) {
+      this.eventList = []
+      this.$refs.eventSelector.reset()
+      this.resetEventParams()
       this.queryEventList(project)
     },
 
     selectEvent(eventName) {
+      this.resetEventParams()
       this.queryColumnList(eventName)
+    },
+
+    resetEventParams() {
+      // 重新选择事件后，重置事件选择相关参数
+      this.columnList = []
+      this.$refs.distinctColumnSelector.reset()
+      this.$refs.groupByColumnSelector.reset()
+      this.$refs.separationTimeSelector.reset()
+      this.$refs.dateTimeRangeSelector.reset()
+      this.$refs.conditionGroup.reset()
     }
   },
 

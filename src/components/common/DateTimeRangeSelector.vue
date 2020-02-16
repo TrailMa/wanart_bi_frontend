@@ -80,6 +80,9 @@ export default {
     getEndTime() {
       const end = this.value[1]
       return timeParser.dateTimeToString(end, 'YYYY-MM-dd hh:mm:ss')
+    },
+    reset() {
+      this.value = [new Date(new Date().toLocaleDateString()), new Date()]
     }
   }
 }

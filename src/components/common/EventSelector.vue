@@ -42,6 +42,10 @@ export default {
 
     getCurEventName() {
       return this.curEventName
+    },
+
+    reset() {
+      this.curEventName = ''
     }
   }
 }

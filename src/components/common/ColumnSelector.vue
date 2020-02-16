@@ -57,6 +57,11 @@ export default {
     },
     getCurColumnName() {
       return this.curColumnName
+    },
+
+    reset() {
+      this.curColumnName = ''
+      this.curColumnIndex = 0
     }
   }
 }

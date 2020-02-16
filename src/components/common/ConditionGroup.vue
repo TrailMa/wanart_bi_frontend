@@ -48,6 +48,10 @@ export default {
     },
     addCondition() {
       this.conditionList.push(this.conditionList.length)
+    },
+
+    reset() {
+      this.conditionList = []
     }
   }
 }

@@ -36,6 +36,10 @@ export default {
 
     getCurSeparationTime() {
       return this.curSeparationTime
+    },
+
+    reset() {
+      this.curSeparationTime = 'day'
     }
   }
 }
