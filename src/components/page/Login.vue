@@ -67,8 +67,8 @@ export default {
             // setCookie('username')
             this.$store.dispatch('setProjectList', result.projectList)
             this.$store.dispatch('setCurProjectId', result.curProjectId)
-            this.$router.push('/queryEvent')
-            //this.$router.push('/queryFunnel')
+            //this.$router.push('/queryEvent')
+            this.$router.push('/queryFunnel')
           } else {
             this.$message(result.msg)
           }

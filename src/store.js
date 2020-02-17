@@ -87,6 +87,7 @@ export default new Vuex.Store({
     projectList: [], //[{id, name, timeCreated, desc}] 前端使用desc作为项目名称
     eventList: new Map(), // key projectId, value eventList[]
     curProjectId: 0, // 当前项目对应的project id
+    curProject: undefined
   },
 
   mutations: {
@@ -96,6 +97,17 @@ export default new Vuex.Store({
 
     setCurProjectId(state, index) {
       state.curProjectId = index
+      let find = false
+      for (let project of state.projectList) {
+        if (project.id == state.curProjectId) {
+          state.curProject = project
+          find = true
+          break
+        }
+      }
+      if (!find) {
+        curProject = undefined
+      }
     },
   },
 

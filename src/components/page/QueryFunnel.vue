@@ -12,6 +12,11 @@
       :options="stepList"
       ref="stepSelector"
     ></common-selector>
+
+    <funnel-group :eventList="eventList" ref="funnelGroup"></funnel-group>
+
+    <el-button type="primary" @click="queryFunnel">查询</el-button>
+    <ve-funnel :data="chartData"></ve-funnel>
   </div>
 </template>
 
@@ -21,6 +26,8 @@ import EventSelector from '../common/EventSelector'
 import ColumnSelector from '../common/ColumnSelector'
 import CommonSelector from '../common/CommonSelector'
 import DateTimeSelector from '../common/DateTimeSelector'
+
+import FunnelGroup from '../common/FunnelGroup'
 
 export default {
   name: 'QueryFunnel',
@@ -37,22 +44,64 @@ export default {
         { value: 7, label: 7 }
       ],
 
-      curStep: 1
+      curStep: 1,
+      eventList: [],
+      chartData: {
+        columns: ['eventName', 'value'],
+        rows: []
+      }
     }
   },
 
   methods: {
     selectProject(project) {
       this.reset()
-      //this.queryEventList(project)
+      this.queryEventList(project)
     },
 
     reset() {
       this.curStep = 1
+      this.eventList = []
+      this.chartData.rows = []
       this.$refs.stepSelector.reset()
       this.$refs.dateTimeSelector.reset()
     },
-    queryFunnel() {}
+
+    async queryEventList(project) {
+      if (!project) {
+        return
+      }
+      let result = await this.$axios.get('api/event/queryAll', {
+        params: { project: project.name }
+      })
+      if (result.result == 1) {
+        this.eventList = result.eventList
+      } else {
+        this.$message(result.msg)
+      }
+    },
+
+    async queryFunnel() {
+      let project = this.$store.state.curProject.name
+      let steps = this.$refs.stepSelector.getSelectedValue()
+      let startTime = this.$refs.dateTimeSelector.getTime()
+      let funnelQueryList = this.$refs.funnelGroup.getFunnels()
+      let param = { project, steps, startTime, funnelQueryList }
+      console.log(param)
+
+      let url = '/api/funnel/query'
+      let params = {
+        queryFunnelRequest: param
+      }
+      let result = await this.$axios.post(url, param)
+      if (result.result == 1) {
+        this.chartData.rows = result.funnelResultList
+        console.log('query funnel response')
+        console.log(result)
+      } else {
+        this.$message(result.msg)
+      }
+    }
   },
 
   components: {
@@ -60,7 +109,9 @@ export default {
     EventSelector,
     ColumnSelector,
     CommonSelector,
-    DateTimeSelector
+    DateTimeSelector,
+
+    FunnelGroup
   }
 }
 </script>

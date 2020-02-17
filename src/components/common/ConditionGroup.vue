@@ -8,7 +8,7 @@
     >
     </condition-selector>
     <el-button type="primary" icon="el-icon-plus" @click="addCondition"
-      >添加</el-button
+      >添加条件</el-button
     >
   </div>
 </template>
