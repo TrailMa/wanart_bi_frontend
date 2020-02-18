@@ -16,7 +16,11 @@
     <funnel-group :eventList="eventList" ref="funnelGroup"></funnel-group>
 
     <el-button type="primary" @click="queryFunnel">查询</el-button>
-    <ve-funnel :data="chartData"></ve-funnel>
+    <el-button v-if="useNumSettings" @click="changeChartShow"
+      >计算百分比</el-button
+    >
+    <el-button v-else @click="changeChartShow"> 展示数值 </el-button>
+    <ve-funnel :data="chartData" :settings="chartSettings"></ve-funnel>
   </div>
 </template>
 
@@ -26,13 +30,25 @@ import EventSelector from '../common/EventSelector'
 import ColumnSelector from '../common/ColumnSelector'
 import CommonSelector from '../common/CommonSelector'
 import DateTimeSelector from '../common/DateTimeSelector'
-
 import FunnelGroup from '../common/FunnelGroup'
+
+import calculate from '../../utils/calculate'
 
 export default {
   name: 'QueryFunnel',
 
   data() {
+    this.chartNumSettings = {
+      dimension: 'eventName',
+      metrics: 'value'
+    }
+
+    this.chartPercentSettings = {
+      dimension: 'eventName',
+      metrics: 'percent',
+      dataType: 'percent',
+      digit: 4
+    }
     return {
       stepList: [
         { value: 1, label: 1 },
@@ -46,10 +62,15 @@ export default {
 
       curStep: 1,
       eventList: [],
+
+      // chart 相关
       chartData: {
-        columns: ['eventName', 'value'],
+        columns: ['eventName', 'percent', 'value'],
         rows: []
-      }
+      },
+
+      chartSettings: this.chartNumSettings,
+      useNumSettings: true
     }
   },
 
@@ -87,7 +108,6 @@ export default {
       let startTime = this.$refs.dateTimeSelector.getTime()
       let funnelQueryList = this.$refs.funnelGroup.getFunnels()
       let param = { project, steps, startTime, funnelQueryList }
-      console.log(param)
 
       let url = '/api/funnel/query'
       let params = {
@@ -95,11 +115,32 @@ export default {
       }
       let result = await this.$axios.post(url, param)
       if (result.result == 1) {
+        const length = result.funnelResultList.length
+        for (let i = 0; i < length; i++) {
+          let curData = result.funnelResultList[i]
+          if (i == 0) {
+            curData['percent'] = 1
+          } else {
+            let preData = result.funnelResultList[i - 1]
+            curData['percent'] = calculate.toPercent(
+              curData.value,
+              preData.value
+            )
+          }
+        }
         this.chartData.rows = result.funnelResultList
-        console.log('query funnel response')
-        console.log(result)
+        console.log(this.chartData)
       } else {
         this.$message(result.msg)
+      }
+    },
+
+    changeChartShow() {
+      this.useNumSettings = !this.useNumSettings
+      if (this.useNumSettings) {
+        this.chartSettings = this.chartNumSettings
+      } else {
+        this.chartSettings = this.chartPercentSettings
       }
     }
   },
