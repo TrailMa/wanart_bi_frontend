@@ -132,6 +132,13 @@ export default new Router({
       meta: {
         title: '漏斗查询'
       }
+    },
+    {
+      path: '/queryRetention',
+      component: () => import('../components/page/QueryRetention.vue'),
+      meta: {
+        title: '留存查询'
+      }
     }
     // {
     //     path: '*',

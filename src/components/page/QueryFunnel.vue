@@ -129,7 +129,6 @@ export default {
           }
         }
         this.chartData.rows = result.funnelResultList
-        console.log(this.chartData)
       } else {
         this.$message(result.msg)
       }

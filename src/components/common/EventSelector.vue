@@ -1,7 +1,7 @@
 <template>
   <el-select
     v-model="curEventName"
-    placeholder="选择事件"
+    :placeholder="usage"
     @change="onSelectEvent"
   >
     <el-option
@@ -22,6 +22,12 @@ export default {
       type: Array,
       default() {
         return []
+      }
+    },
+    usage: {
+      type: String,
+      default() {
+        return '选择事件'
       }
     }
   },

@@ -68,7 +68,8 @@ export default {
             this.$store.dispatch('setProjectList', result.projectList)
             this.$store.dispatch('setCurProjectId', result.curProjectId)
             //this.$router.push('/queryEvent')
-            this.$router.push('/queryFunnel')
+            // this.$router.push('/queryFunnel')
+            this.$router.push('/queryRetention')
           } else {
             this.$message(result.msg)
           }

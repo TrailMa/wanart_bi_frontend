@@ -26,5 +26,24 @@ export default {
       }
     }
     return fmt
+  },
+
+  stringToDate(timeStr) {
+    timeStr = timeStr.replace(/-/g, "/");
+    return new Date(timeStr);
+  },
+
+  isSameDay(date1, date2) {
+    return date1.getFullYear() == data2.getFullYear() &&
+      date1.getMonth() == date2.getMonth() &&
+      date1.getDate() == date2.getDate()
+  },
+
+  getDaysBetween(dateStr1, dateStr2) {
+    let date1 = this.stringToDate(dateStr1)
+    let date2 = this.stringToDate(dateStr2)
+    let dateSpan = date2 - date1;
+    dateSpan = Math.abs(dateSpan);
+    return Math.floor(dateSpan / (24 * 3600 * 1000));
   }
 }
